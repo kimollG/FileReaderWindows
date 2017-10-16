@@ -7,6 +7,6 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     FileReader* reader=new FileReader();
-    reader->ReadFile("africanHead.obj");
+    reader->ReadFile("C:/Users/Morozov_K/Documents/africanHead.obj.txt");
     return a.exec();
 }

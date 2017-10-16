@@ -7,7 +7,7 @@ class FileReader
     ModelData data;
 public:
     FileReader();
-    ModelData* ReadFile(std::string fileName);
+    ModelData* ReadFile(QString fileName);
 };
 
 #endif // FILEREADER_H
