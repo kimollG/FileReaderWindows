@@ -15,13 +15,25 @@ QVector3D* ExtractCoordinateString(QString s)
     QVector3D* vec= new QVector3D(list.at(1).toDouble(),list.at(2).toDouble(),list.count()>3?list.at(3).toDouble():0);
     return vec;
 }
-VertexData* ExtractPolygonString(QString s,QList<QVector3D>* verts,QList<QPointF>* tCoords, QList<QVector3D>* nVecs)
+QVector<VertexData*> ExtractPolygonString(QString s,QList<QVector3D>* verts,QList<QPointF>* tCoords, QList<QVector3D>* nVecs)
 {
     QStringList list=s.split(' ',QString::SkipEmptyParts);
-    for(QStringList::iterator curr=list.begin();curr!=list.end();curr++)
+    QList<VertexData*>* dataList=new QList<VertexData*>();
+    for(QStringList::iterator curr=list.begin()+1;curr!=list.end();curr++)
     {
         QStringList vert=(*curr).split('/');
+        const QVector3D* coord=&(verts->at(list.at(0).toInt()));
+        const QPointF* texture;
+        const QVector3D* nVec;
+        if(vert.count()>1&&vert[1].toStdString()!="")
+            texture =&(tCoords->at(list.at(1).toInt()));
+        else texture=0;
+        if(vert.count()==3&&vert[2].toStdString()!="")
+            nVec=&(nVecs->at(list.at(2).toInt()));
+        else nVec=0;
+        dataList->push_back(new VertexData((QVector3D*)coord,(QPointF*)texture,(QVector3D*)nVec));
     }
+    return dataList->toVector();
 }
 
 ModelData* FileReader::ReadFile(std::string fileName)
