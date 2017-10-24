@@ -2,12 +2,14 @@
 #define FILEREADER_H
 #include "modeldata.h"
 #include <string>
-class FileReader
+class FileProducer
 {
     ModelData data;
 public:
-    FileReader();
-    ModelData* ReadFile(QString fileName);
+    FileProducer();
+    ModelData* ReadFile(QString);
+    void SSS()
+    {}
 };
 
 #endif // FILEREADER_H

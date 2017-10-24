@@ -7,11 +7,12 @@
 class ModelData
 {
 public:
-
-    QVector<QVector3D> vertices;
-    QVector<QPointF> texturePoints;
-    QVector<QVector3D> normaleVectors;
-    QVector<VertexData> fullVertexData;
+    ModelData();
+    ModelData(QVector<QVector3D*>*& verts,QVector<QPointF*>*& tp,QVector<QVector3D*>*& nv,QVector<QVector<VertexData*>*>*& fullVerts);
+    QVector<QVector3D*>* vertices;
+    QVector<QPointF*>* texturePoints;
+    QVector<QVector3D*>* normaleVectors;
+    QVector<QVector<VertexData*>*>* polygons;
 
 };
 

@@ -6,7 +6,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    FileReader* reader=new FileReader();
-    reader->ReadFile("C:/Users/Morozov_K/Documents/africanHead.obj.txt");
+    FileProducer* fileManager=new FileProducer();
+    ModelData* data=fileManager->ReadFile("C:\\africanHead.obj");
+    fileManager->SaveToFile(data,"newTTT.obj");
     return a.exec();
 }
