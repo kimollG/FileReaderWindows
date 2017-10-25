@@ -5,22 +5,20 @@ FileProducer::FileProducer()
 {
 
 }
-QVector3D* ExtraFunctions::ExtractCoordinateString(QString s)
+QPointF* ExtraFunctions::Extract2DCoordinateString(QString s, int i)
 {
     QStringList list=s.split(' ',QString::SkipEmptyParts);
-    float x=0,y=0,z=0;
-    //(list.at(1).toDouble(),list.at(2).toDouble(),list.count()>3?list.at(3).toDouble():0);
-    if(list.count()>1)
-    {
-        x=list.at(1).toDouble();
-        if(list.count()>2)
-        {
-            y=list.at(2).toDouble();
-            if(list.count()>3)
-                z=list.at(3).toDouble();
-        }
-    }
-    return new QVector3D(x,y,z);
+    if(list.length()<3)
+        throw "problem in document's line № "+QString::number(i)+" : to few arguments";
+    return new QPointF(list.at(1).toDouble(),list.at(2).toDouble());
+}
+
+QVector3D* ExtraFunctions::Extract3DCoordinateString(QString s,int i)
+{
+    QStringList list=s.split(' ',QString::SkipEmptyParts);        
+    if(list.length()<4)
+        throw "problem in document's line № "+QString::number(i)+" : to few arguments";
+    return new QVector3D(list.at(1).toDouble(),list.at(2).toDouble(),list.at(3).toDouble());
 }
 QVector<VertexData*>* ExtraFunctions::ExtractPolygonString(QString s,QList<QVector3D*>* verts,QList<QPointF*>* tCoords, QList<QVector3D*>* nVecs)
 {
@@ -32,6 +30,8 @@ QVector<VertexData*>* ExtraFunctions::ExtractPolygonString(QString s,QList<QVect
         int index=vert.at(0).toInt()-1;
         if(index<0)
                 index=verts->length()+index;
+        if(index>=verts->length())
+            throw "The're no element № "+QString::number(index+1)+" in vertices list";
         const QVector3D* coord=verts->at(index);
         const QPointF* texture;
         const QVector3D* nVec;
@@ -40,6 +40,8 @@ QVector<VertexData*>* ExtraFunctions::ExtractPolygonString(QString s,QList<QVect
             index=vert.at(1).toInt()-1;
             if(index<0)
                     index=tCoords->length()+index;
+            if(index>=tCoords->length())
+                throw "The're no element № "+QString::number(index+1)+" in vt list";
             texture =tCoords->at(index);
         }
         else texture=0;
@@ -48,6 +50,8 @@ QVector<VertexData*>* ExtraFunctions::ExtractPolygonString(QString s,QList<QVect
             index=vert.at(2).toInt()-1;
             if(index<0)
                     index=nVecs->length()+index;
+            if(index>=nVecs->length())
+                throw "The're no element № "+QString::number(index+1)+" in vn list";
             nVec=nVecs->at(index);
         }
         else nVec=0;
@@ -64,16 +68,17 @@ ModelData* FileProducer::ReadFile(QString fileName)
     if (!file.open(QIODevice::ReadOnly))
     {
         throw new std::exception();
-    }
-    ExtractCoordinateString(QString::fromStdString("s 0.5454 2.34343 5.3434"));
+    }    
     QList<QVector3D*>* verts=new QList<QVector3D*>();
     QList<QPointF*>* tCoords=new QList<QPointF*>();
     QList<QVector3D*>* nVecs=new QList<QVector3D*>();
     QStringList* faces=new QStringList();
     QString inputLine;
     QTextStream in(&file);
+    int i=0;
     while ( !in.atEnd())
     {
+        i++;
         (inputLine=in.readLine()).toStdString();
         switch (inputLine.toStdString()[0])
         {
@@ -81,14 +86,14 @@ ModelData* FileProducer::ReadFile(QString fileName)
             switch (inputLine.toStdString()[1]) {
             case 't':
             {
-                QVector3D v=*ExtractCoordinateString(inputLine);
+                QVector3D v=*Extract3DCoordinateString(inputLine,i);
                 tCoords->push_back(new QPointF(v.x(),v.y()));}
                 break;
             case 'n':
-                nVecs->push_back(ExtractCoordinateString(inputLine));
+                nVecs->push_back(Extract3DCoordinateString(inputLine,i));
                 break;
             default:
-                verts->push_back(ExtractCoordinateString(inputLine));
+                verts->push_back(Extract3DCoordinateString(inputLine,i));
                 break;
             }
             break;
