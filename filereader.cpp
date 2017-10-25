@@ -1,44 +1,62 @@
 #include "filereader.h"
-#include <fstream>
-#include <iostream>
-#include <QFile>
-#include <QString>
-#include <QTextStream>
-#include <QChar>
-#include <QFileInfo>
-#include <QDebug>
+#include "extrafunctions.h"
 
 FileProducer::FileProducer()
 {
 
 }
-QVector3D* ExtractCoordinateString(QString s)
+QVector3D* ExtraFunctions::ExtractCoordinateString(QString s)
 {
     QStringList list=s.split(' ',QString::SkipEmptyParts);
-    QVector3D* vec= new QVector3D(list.at(1).toDouble(),list.at(2).toDouble(),list.count()>3?list.at(3).toDouble():0);
-    return vec;
+    float x=0,y=0,z=0;
+    //(list.at(1).toDouble(),list.at(2).toDouble(),list.count()>3?list.at(3).toDouble():0);
+    if(list.count()>1)
+    {
+        x=list.at(1).toDouble();
+        if(list.count()>2)
+        {
+            y=list.at(2).toDouble();
+            if(list.count()>3)
+                z=list.at(3).toDouble();
+        }
+    }
+    return new QVector3D(x,y,z);
 }
-QVector<VertexData*>* ExtractPolygonString(QString s,QList<QVector3D*>* verts,QList<QPointF*>* tCoords, QList<QVector3D*>* nVecs)
+QVector<VertexData*>* ExtraFunctions::ExtractPolygonString(QString s,QList<QVector3D*>* verts,QList<QPointF*>* tCoords, QList<QVector3D*>* nVecs)
 {
     QStringList list=s.split(' ',QString::SkipEmptyParts);
     QList<VertexData*>* dataList=new QList<VertexData*>();
     for(QStringList::iterator curr=list.begin()+1;curr!=list.end();curr++)
     {
         QStringList vert=(*curr).split('/');
-        const QVector3D* coord=verts->at(vert.at(0).toInt()-1);
+        int index=vert.at(0).toInt()-1;
+        if(index<0)
+                index=verts->length()+index;
+        const QVector3D* coord=verts->at(index);
         const QPointF* texture;
         const QVector3D* nVec;
         if(vert.count()>1&&vert[1].toStdString()!="")
-            texture =tCoords->at(vert.at(1).toInt()-1);
+        {
+            index=vert.at(1).toInt()-1;
+            if(index<0)
+                    index=tCoords->length()+index;
+            texture =tCoords->at(index);
+        }
         else texture=0;
         if(vert.count()==3&&vert[2].toStdString()!="")
-            nVec=nVecs->at(vert.at(2).toInt()-1);
+        {
+            index=vert.at(2).toInt()-1;
+            if(index<0)
+                    index=nVecs->length()+index;
+            nVec=nVecs->at(index);
+        }
         else nVec=0;
         dataList->push_back(new VertexData((QVector3D*)coord,(QPointF*)texture,(QVector3D*)nVec));
     }
     QVector<VertexData*>* out=new QVector<VertexData*>(dataList->toVector());
     return out;
 }
+using namespace ExtraFunctions;
 
 ModelData* FileProducer::ReadFile(QString fileName)
 {
@@ -57,7 +75,8 @@ ModelData* FileProducer::ReadFile(QString fileName)
     while ( !in.atEnd())
     {
         (inputLine=in.readLine()).toStdString();
-        switch (inputLine.toStdString()[0]) {
+        switch (inputLine.toStdString()[0])
+        {
         case 'v':
             switch (inputLine.toStdString()[1]) {
             case 't':
@@ -66,7 +85,6 @@ ModelData* FileProducer::ReadFile(QString fileName)
                 tCoords->push_back(new QPointF(v.x(),v.y()));}
                 break;
             case 'n':
-
                 nVecs->push_back(ExtractCoordinateString(inputLine));
                 break;
             default:
@@ -104,7 +122,8 @@ ModelData* FileProducer::ReadFile(QString fileName)
 void FileProducer::SaveToFile(ModelData* data,QString fileName)
 {
     QFile file(fileName);
-    if (file.open(QIODevice::ReadWrite)) {
+    if (file.open(QIODevice::ReadWrite|QFile::Truncate))
+    {
             QTextStream stream(&file);
             stream << "#made by fileWriter" << "\r\n";
             for (QVector<QVector3D*>::iterator iter=data->vertices->begin();iter<data->vertices->end();iter++)
@@ -112,7 +131,7 @@ void FileProducer::SaveToFile(ModelData* data,QString fileName)
                 stream<<"v "<<(*iter)->x()<<" "<<(*iter)->y()<<" "<<(*iter)->z()<<"\r\n";
             }
             for (QVector<QPointF*>::iterator iter=data->texturePoints->begin();iter<data->texturePoints->end();iter++)
-            {
+            {                
                 stream<<"vt "<<(*iter)->x()<<" "<<(*iter)->y()<<"\r\n";
             }
             for (QVector<QVector3D*>::iterator iter=data->normaleVectors->begin();iter<data->normaleVectors->end();iter++)
@@ -132,4 +151,5 @@ void FileProducer::SaveToFile(ModelData* data,QString fileName)
             }
         }
 }
+
 

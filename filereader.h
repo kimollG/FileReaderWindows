@@ -2,14 +2,22 @@
 #define FILEREADER_H
 #include "modeldata.h"
 #include <string>
+#include "filereader.h"
+#include <fstream>
+#include <iostream>
+#include <QFile>
+#include <QString>
+#include <QTextStream>
+#include <QChar>
+#include <QFileInfo>
+#include <QDebug>
 class FileProducer
 {
     ModelData data;
 public:
     FileProducer();
     ModelData* ReadFile(QString);
-    void SSS()
-    {}
+    void SaveToFile(ModelData*,QString fileName);
 };
 
 #endif // FILEREADER_H

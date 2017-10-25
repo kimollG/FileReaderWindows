@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,11 +27,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     filereader.cpp \
     modeldata.cpp \
-    vertexdata.cpp
+    vertexdata.cpp \
+    testobj_loader.cpp
 
 HEADERS  += mainwindow.h \
     filereader.h \
     modeldata.h \
-    vertexdata.h
+    vertexdata.h \
+    testobj_loader.h \
+    extrafunctions.h
 
 FORMS    += mainwindow.ui
