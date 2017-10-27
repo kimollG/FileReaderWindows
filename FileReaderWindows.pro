@@ -25,16 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    filereader.cpp \
     modeldata.cpp \
     vertexdata.cpp \
-    testobj_loader.cpp
+    testobj_loader.cpp \
+    OBJLoader.cpp
 
 HEADERS  += mainwindow.h \
-    filereader.h \
     modeldata.h \
     vertexdata.h \
     testobj_loader.h \
-    extrafunctions.h
+    extrafunctions.h \
+    OBJLoader.h
 
 FORMS    += mainwindow.ui

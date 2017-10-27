@@ -2,7 +2,6 @@
 #define FILEREADER_H
 #include "modeldata.h"
 #include <string>
-#include "filereader.h"
 #include <fstream>
 #include <iostream>
 #include <QFile>
@@ -11,11 +10,11 @@
 #include <QChar>
 #include <QFileInfo>
 #include <QDebug>
-class FileProducer
+class OBJLoader
 {
     ModelData data;
 public:
-    FileProducer();
+    OBJLoader();
     ModelData* ReadFile(QString);
     void SaveToFile(ModelData*,QString fileName);
 };

@@ -1,7 +1,7 @@
-#include "filereader.h"
+#include "OBJLoader.h"
 #include "extrafunctions.h"
 
-FileProducer::FileProducer()
+OBJLoader::OBJLoader()
 {
 
 }
@@ -62,7 +62,7 @@ QVector<VertexData*>* ExtraFunctions::ExtractPolygonString(QString s,QList<QVect
 }
 using namespace ExtraFunctions;
 
-ModelData* FileProducer::ReadFile(QString fileName)
+ModelData* OBJLoader::ReadFile(QString fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
@@ -124,7 +124,7 @@ ModelData* FileProducer::ReadFile(QString fileName)
     delete faces;
     return mod;
 }
-void FileProducer::SaveToFile(ModelData* data,QString fileName)
+void OBJLoader::SaveToFile(ModelData* data,QString fileName)
 {
     QFile file(fileName);
     if (file.open(QIODevice::ReadWrite|QFile::Truncate))

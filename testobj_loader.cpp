@@ -32,7 +32,7 @@ void TestOBJ_Loader::OBJ_LoaderTest()
 }
 
 
-void TestOBJ_Loader::testWrongVertex()
+/*void TestOBJ_Loader::testWrongVertex()
 {
     QTextStream a;
     a << "v 12312 1231 1231\nv123123 1231"
@@ -76,6 +76,6 @@ void TestOBJ_Loader::testSomething()
     QCompare(verticesRight, modelData.vertices);
     QCompare(verticesfacesRight, modelData.faces);
 }
-
+*/
 
 
