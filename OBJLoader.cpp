@@ -62,7 +62,7 @@ QVector<VertexData*>* ExtraFunctions::ExtractPolygonString(QString s,QList<QVect
 }
 using namespace ExtraFunctions;
 
-ModelData* OBJLoader::ReadFile(QString fileName)
+bool OBJLoader::ReadFile(QString fileName,ModelData** data)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))

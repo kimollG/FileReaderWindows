@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
         ModelData* data;
         try
         {
-            data=fileManager->ReadFile(path+"\\africanHeadCorrupted.obj");
+            bool b=fileManager->ReadFile(path+"\\africanHeadCorrupted.obj",&data);
             fileManager->SaveToFile(data,path+"\\newTTTCorrupted.obj");
         }
         catch(QString exceptionMessage)
