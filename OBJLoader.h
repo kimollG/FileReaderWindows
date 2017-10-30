@@ -15,8 +15,8 @@ class OBJLoader
     ModelData data;
 public:
     OBJLoader();
-    bool ReadFile(QString,ModelData**);
-    bool ReadStream(QTextStream stream,ModelData**);
+    bool ReadFile(QString,ModelData**,QString *errMessage);
+    bool ReadStream(QTextStream *stream,ModelData**,QString *errMessage);
     void SaveToFile(ModelData*,QString fileName);
 };
 
