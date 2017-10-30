@@ -132,7 +132,13 @@ void OBJLoader::SaveToFile(ModelData* data,QString fileName)
             QTextStream stream(&file);
             stream << "#made by fileWriter" << "\r\n";
             //data->vertices->
+            QVector<QVector3D> *deb=new QVector<QVector3D>();
+            deb->push_back(QVector3D(1,2,4));
+            deb->push_back(QVector3D(2,2,4));
+            deb->push_back(QVector3D(3,2,4));
+            deb->push_back(QVector3D(4,2,4));
             QVector<QVector3D>::ConstIterator iterX;
+            iterX=(*deb).constBegin();
             iterX=(*(data->vertices)).constBegin();
             for (QVector<QVector3D>::iterator iter=data->vertices->begin();iter<data->vertices->end();iter++)
             {                
