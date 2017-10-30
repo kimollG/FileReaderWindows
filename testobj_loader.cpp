@@ -19,7 +19,7 @@ void TestOBJ_Loader::OBJ_LoaderTest()
     try
     {
         bool b;
-        QVector3D v=ExtraFunctions::Extract3DCoordinateString(parameter,&b);
+        QVector3D v=ExtraFunctions::Extract3DCoordinateString(parameter,b);
         QCOMPARE(v,result);
     }
     catch (QString exMessage)

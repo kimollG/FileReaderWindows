@@ -2,7 +2,10 @@
 #include <QApplication>
 #include "OBJLoader.h"
 #include "QTest"
+#include "QtWidgets"
+#include "QWidget"
 #include "testobj_loader.h"
+#include "display.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -20,8 +23,14 @@ int main(int argc, char *argv[])
     ModelData* data;
     bool b=fileManager->ReadFile(path+"\\africanHeadCorrupted2.obj",&data,&errMessage);
     if(b)
+    {
         fileManager->SaveToFile(data,path+"\\newTTTCorrupted.obj");
+        qDebug()<<"completed";
+    }
     else
         qDebug()<<errMessage;
+
+    Display disp(*data);
+
     return a.exec();
 }
