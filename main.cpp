@@ -9,15 +9,16 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     OBJLoader* fileManager=new OBJLoader();
-    QString path="c:\\pr";
+    QString path="C:\\Users\\Morozov_K\\Documents";
     TestOBJ_Loader* testLoader = new TestOBJ_Loader;
+
     QStringList testNames;
-    testNames << "testWrongVertex" << "testWrongFace";
+    testNames << "" << "testWrongFace" << "testWrongVertex";
     //QTest::qExec(testLoader, testNames);
     QTest::qExec(testLoader);
     QString errMessage;
     ModelData* data;
-    bool b=fileManager->ReadFile(path+"\\africanHead.obj",&data,&errMessage);
+    bool b=fileManager->ReadFile(path+"\\africanHeadCorrupted2.obj",&data,&errMessage);
     if(b)
         fileManager->SaveToFile(data,path+"\\newTTTCorrupted.obj");
     else

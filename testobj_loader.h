@@ -13,6 +13,6 @@ private slots:
     void OBJ_LoaderTest();
     void testWrongVertex();
     void testWrongFace();
-    void testWrongFaceInvalidVertexIndex();
+    void testWrongFaceInvalidVertexIndex();    
 };
 #endif // TESTOBJ_LOADER_H

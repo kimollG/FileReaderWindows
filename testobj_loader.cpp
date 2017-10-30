@@ -6,7 +6,7 @@ void TestOBJ_Loader::OBJ_LoaderTest_data()
     QTest::addColumn<QString>("parameter");
     QTest::addColumn<QVector3D>("result");
     QTest::newRow("normal")<<"v 1 2 3"<<QVector3D(1,2,3);
-    QTest::newRow("four coords")<<"vn 1 2 3 1"<<QVector3D(1,2,3);    
+    QTest::newRow("four coords")<<"vn 1 2 3 1"<<QVector3D(0,0,0);
     QTest::newRow("no Coords")<<"vt "<<QVector3D(0,0,0);
 
     //QTEST_ASSERT(1==0);
@@ -18,7 +18,8 @@ void TestOBJ_Loader::OBJ_LoaderTest()
     QFETCH(QVector3D,result);
     try
     {
-        QVector3D v=ExtraFunctions::Extract3DCoordinateString(parameter);
+        bool b;
+        QVector3D v=ExtraFunctions::Extract3DCoordinateString(parameter,&b);
         QCOMPARE(v,result);
     }
     catch (QString exMessage)
@@ -61,6 +62,7 @@ void TestOBJ_Loader::testWrongFaceInvalidVertexIndex()
     QCOMPARE(status,false);
     QCOMPARE(s,QString::fromStdString("The're no element № 999 in vertices list"));
 }
+
 /*
 void TestOBJ_Loader::testSomething()
 {
