@@ -4,8 +4,8 @@
 #include <vertexdata.h>
 namespace ExtraFunctions
 {
-    QVector3D* Extract3DCoordinateString(QString s,int i=0);
-    QPointF* Extract2DCoordinateString(QString,int=0);
-    QVector<VertexData*>* ExtractPolygonString(QString s,QList<QVector3D*>* verts,QList<QPointF*>* tCoords, QList<QVector3D*>* nVecs);
+    QVector3D Extract3DCoordinateString(QString s);
+    QPointF Extract2DCoordinateString(QString);
+    QVector<VertexData>* ExtractPolygonString(QString s,QVector<QVector3D>* verts,QVector<QPointF>* tCoords, QVector<QVector3D>* nVecs);
 }
 #endif // EXTRAFUNCTIONS_H

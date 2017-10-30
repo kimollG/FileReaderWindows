@@ -9,23 +9,18 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     OBJLoader* fileManager=new OBJLoader();
-        QString path="C:\\Users\\Morozov_K\\Documents";
-
-        TestOBJ_Loader* testLoader = new TestOBJ_Loader;
-        QStringList testNames;
-        testNames << "testWrongVertex" << "testWrongFace";
-        QTest::qExec(testLoader, testNames);
-
-        ModelData* data;
-        try
-        {
-            data=fileManager->ReadFile(path+"\\africanHeadCorrupted.obj");
-            fileManager->SaveToFile(data,path+"\\newTTTCorrupted.obj");
-        }
-        catch(QString exceptionMessage)
-        {
-            qDebug()<<exceptionMessage;
-        }
-
+    QString path="c:\\pr";
+    TestOBJ_Loader* testLoader = new TestOBJ_Loader;
+    QStringList testNames;
+    testNames << "testWrongVertex" << "testWrongFace";
+    //QTest::qExec(testLoader, testNames);
+    QTest::qExec(testLoader);
+    QString errMessage;
+    ModelData* data;
+    bool b=fileManager->ReadFile(path+"\\africanHead.obj",&data,&errMessage);
+    if(b)
+        fileManager->SaveToFile(data,path+"\\newTTTCorrupted.obj");
+    else
+        qDebug()<<errMessage;
     return a.exec();
 }
