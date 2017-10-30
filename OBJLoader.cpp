@@ -11,7 +11,6 @@ QPointF ExtraFunctions::Extract2DCoordinateString(QString s)
     QStringList list=s.split(' ',QString::SkipEmptyParts);
     if(list.length()<3)
         problem=true;
-        //throw "problem in document's line № "+QString::number(i)+" : to few arguments";
     return QPointF(list.at(1).toDouble(),list.at(2).toDouble());
 }
 
@@ -23,7 +22,6 @@ QVector3D ExtraFunctions::Extract3DCoordinateString(QString s)
         problem=true;
         return QVector3D(0,0,0);
     }
-        //throw "problem in document's line № "+QString::number(i)+" : to few arguments";
     return QVector3D(list.at(1).toDouble(),list.at(2).toDouble(),list.at(3).toDouble());
 }
 QString proplemMessage;
@@ -79,7 +77,6 @@ QVector<VertexData>* ExtraFunctions::ExtractPolygonString(QString s,QVector<QVec
             }
             nVec=&(nVecs->at(index));
         }
-
         else nVec=0;
         dataList->push_back(*(new VertexData((QVector3D*)coord,(QPointF*)texture,(QVector3D*)nVec)));
     }
@@ -95,12 +92,8 @@ bool OBJLoader::ReadFile(QString fileName,ModelData** data,QString* errMessage)
     {
         return false;
     }    
-
     QTextStream in(&file);
-
     return this->ReadStream(&in,data,errMessage);
-
-
 }
 bool OBJLoader::ReadStream(QTextStream *stream,ModelData** data,QString *errMessage)
 {
@@ -167,7 +160,7 @@ bool OBJLoader::ReadStream(QTextStream *stream,ModelData** data,QString *errMess
     delete nVecs;
     delete polygVec;
     delete faces;
-    return false;
+    return true;
 }
 void OBJLoader::SaveToFile(ModelData* data,QString fileName)
 {
@@ -176,15 +169,6 @@ void OBJLoader::SaveToFile(ModelData* data,QString fileName)
     {
             QTextStream stream(&file);
             stream << "#made by fileWriter" << "\r\n";
-            //data->vertices->
-            QVector<QVector3D> *deb=new QVector<QVector3D>();
-            deb->push_back(QVector3D(1,2,4));
-            deb->push_back(QVector3D(2,2,4));
-            deb->push_back(QVector3D(3,2,4));
-            deb->push_back(QVector3D(4,2,4));
-            QVector<QVector3D>::ConstIterator iterX;
-            iterX=(*deb).constBegin();
-            //iterX=(*(data->vertices)).constBegin();
             QVector<QVector3D> v=*(data->vertices);
             for (QVector<QVector3D>::iterator iter=data->vertices->begin();iter<data->vertices->end();iter++)
             {                
