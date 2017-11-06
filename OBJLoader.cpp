@@ -18,38 +18,37 @@ bool ExtraFunctions::isListNumeric(QStringList* list)
     return true;
 }
 
-QPointF ExtraFunctions::Extract2DCoordinateString(QString s,bool *ok)
+QPointF ExtraFunctions::Extract2DCoordinateString(QString s,bool &ok)
 {
-    *ok=true;
+    ok=true;
     QStringList list=s.split(' ',QString::SkipEmptyParts);
     if(list.length()!=4&&list.length()!=3||!isListNumeric(&list))
     {
-        *ok=false;
+        ok=false;
         return QPointF(0,0);
     }
     return QPointF(list.at(1).toDouble(),list.at(2).toDouble());
 }
 
-QVector3D ExtraFunctions::Extract3DCoordinateString(QString s,bool* ok)
+QVector3D ExtraFunctions::Extract3DCoordinateString(QString s,bool &ok)
 {
-    *ok=true;
+    ok=true;
     QStringList list=s.split(' ',QString::SkipEmptyParts);        
     if(list.length()!=4||!isListNumeric(&list))
     {
-        *ok=false;
+        ok=false;
         return QVector3D(0,0,0);    
     }
     return QVector3D(list.at(1).toDouble(),list.at(2).toDouble(),list.at(3).toDouble());
 }
-QVector<VertexData>* ExtraFunctions::ExtractPolygonString(QString s,QVector<QVector3D>* verts,QVector<QPointF>* tCoords, QVector<QVector3D>* nVecs,QString * errMessage)
+QVector<VertexData>* ExtraFunctions::ExtractPolygonString(QString s,QVector<QVector3D>* verts,QVector<QPointF>* tCoords, QVector<QVector3D>* nVecs,QString& errMessage)
 {
-    *errMessage="";
+    errMessage="";
     QStringList list=s.split(' ',QString::SkipEmptyParts);
     QList<VertexData>* dataList=new QList<VertexData>();
     if(list.length()<4)
     {
-
-        *errMessage= "not enought points in polygon";
+        errMessage= "not enought points in polygon";
         return NULL;
     }
     for(QStringList::iterator curr=list.begin()+1;curr!=list.end();curr++)
@@ -60,8 +59,7 @@ QVector<VertexData>* ExtraFunctions::ExtractPolygonString(QString s,QVector<QVec
                 index=verts->length()+index;
         if(index>=verts->length())
         {
-
-            *errMessage= "The're no element № "+QString::number(index+1)+" in vertices list";
+            errMessage= "The're no element № "+QString::number(index+1)+" in vertices list";
             return NULL;
         }
         const QVector3D* coord=&(verts->at(index));
@@ -74,8 +72,7 @@ QVector<VertexData>* ExtraFunctions::ExtractPolygonString(QString s,QVector<QVec
                     index=tCoords->length()+index;
             if(index>=tCoords->length())
             {
-
-                *errMessage= "The're no element № "+QString::number(index+1)+" in vt list";
+                errMessage= "The're no element № "+QString::number(index+1)+" in vt list";
                 return NULL;
             }
             texture =&(tCoords->at(index));
@@ -88,8 +85,7 @@ QVector<VertexData>* ExtraFunctions::ExtractPolygonString(QString s,QVector<QVec
                     index=nVecs->length()+index;
             if(index>=nVecs->length())
              {
-
-                *errMessage = "The're no element № "+QString::number(index+1)+" in vn list";
+                errMessage = "The're no element № "+QString::number(index+1)+" in vn list";
                 return NULL;
             }
             nVec=&(nVecs->at(index));
@@ -114,7 +110,6 @@ bool OBJLoader::ReadFile(QString fileName,ModelData** data,QString* errMessage)
 }
 bool OBJLoader::ReadStream(QTextStream *stream,ModelData** data,QString *errMessage)
 {
-
     bool ok=true;
     QList<QVector3D>* verts=new QList<QVector3D>();
     QList<QPointF>* tCoords=new QList<QPointF>();
@@ -132,14 +127,14 @@ bool OBJLoader::ReadStream(QTextStream *stream,ModelData** data,QString *errMess
                 switch (inputLine.toStdString()[1]) {
                 case 't':
                 {
-                    tCoords->push_back( Extract2DCoordinateString(inputLine,&ok));}
+                    tCoords->push_back( Extract2DCoordinateString(inputLine,ok));}
                     break;
                 case 'n':
-                    nVecs->push_back(Extract3DCoordinateString(inputLine,&ok));
+                    nVecs->push_back(Extract3DCoordinateString(inputLine,ok));
                     break;
 
                 default:
-                    verts->push_back(Extract3DCoordinateString(inputLine,&ok));
+                    verts->push_back(Extract3DCoordinateString(inputLine,ok));
                     break;
                 }
                 break;
@@ -171,7 +166,7 @@ bool OBJLoader::ReadStream(QTextStream *stream,ModelData** data,QString *errMess
     QVector<QVector3D>* v3=new QVector<QVector3D>(nVecs->toVector());
     for(QStringList::iterator c=faces->begin();c!=faces->end();c++)
     {
-        polygVec->push_back(ExtractPolygonString(*c,v1,v2,v3,errMessage));
+        polygVec->push_back(ExtractPolygonString(*c,v1,v2,v3,*errMessage));
         if(*errMessage!="")
         {
             return false;
@@ -193,7 +188,7 @@ void OBJLoader::SaveToFile(ModelData* data,QString fileName)
     {
             QTextStream stream(&file);
             stream << "#made by fileWriter" << "\r\n";
-            QVector<QVector3D> v=*(data->vertices);
+            //QVector<QVector3D> v=*(data->vertices);
             for (QVector<QVector3D>::iterator iter=data->vertices->begin();iter<data->vertices->end();iter++)
             {                
                 stream<<"v "<<iter->x()<<" "<<iter->y()<<" "<<iter->z()<<"\r\n";

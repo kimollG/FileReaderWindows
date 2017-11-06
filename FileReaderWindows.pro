@@ -28,13 +28,17 @@ SOURCES += main.cpp\
     modeldata.cpp \
     vertexdata.cpp \
     testobj_loader.cpp \
-    OBJLoader.cpp
+    OBJLoader.cpp \
+    display.cpp \
+    transformation.cpp
 
 HEADERS  += mainwindow.h \
     modeldata.h \
     vertexdata.h \
     testobj_loader.h \
     extrafunctions.h \
-    OBJLoader.h
+    OBJLoader.h \
+    display.h \
+    transformation.h
 
 FORMS    += mainwindow.ui
