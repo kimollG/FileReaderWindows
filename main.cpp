@@ -8,7 +8,7 @@
 #include "display.h"
 int main(int argc, char *argv[])
 {
-    const int n=600;
+    const int n=900;
     QApplication a(argc, argv);
     QMainWindow *w=new QMainWindow();
     w->resize(n,n);
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     paint->setBackground(QBrush(QColor(255,255,255,255)));
     //paint->drawRect(15,15,100,100);
     OBJLoader* fileManager=new OBJLoader();
-    QString path="C:\\Games";
+    QString path="C:\\Kirill\\FileReaderWindows-Viewport-begin";
     QString errMessage;
     ModelData* data;
     bool b=fileManager->ReadFile(path+"\\africanHead.obj",&data,&errMessage);

@@ -186,13 +186,10 @@ void OBJLoader::SaveToFile(ModelData* data,QString fileName)
     QFile file(fileName);
     if (!file.open(QIODevice::ReadWrite|QFile::Truncate))
     {
-
+        return;
     }
-
-
     QTextStream stream(&file);
-    stream << "#made by fileWriter" << "\r\n";
-    //QVector<QVector3D> v=*(data->vertices);
+    stream << "#made by fileWriter" << "\r\n";   
     for (QVector<QVector3D>::iterator iter=data->vertices->begin();iter<data->vertices->end();iter++)
     {
         stream<<"v "<<iter->x()<<" "<<iter->y()<<" "<<iter->z()<<"\r\n";
