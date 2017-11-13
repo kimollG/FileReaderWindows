@@ -18,7 +18,7 @@ QMatrix4x4 transform::RotationMatrix(double alpha,double beta)
 
 
 
-    return first;
+    return second*first;
 }
 QMatrix4x4 transform::ScaleMatrix(double k)
 {

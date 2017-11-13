@@ -10,20 +10,18 @@ Display::Display(ModelData &data)
 {
     this->data=&data;
 }
-QPointF Projection(QVector3D* q,double k,double offset)
+QPointF Projection(QVector3D q,double k,double offset)
 {
-    QPointF p(q->x(),-q->y());
+    QPointF p(q.x(),-q.y());
     p*=k;
     p+=QPointF(offset*0.5,offset*0.5);
     return p;
 }
-QVector3D* Transform(QVector3D* v,QMatrix4x4 matr)
+QVector3D Transform(QVector3D v,QMatrix4x4 matr)
 {
-    QVector4D projV(*v,1);
+    QVector4D projV(v,1);
     projV=matr*projV;
-
-    *v= projV.toVector3DAffine();
-    return v;
+    return projV.toVector3DAffine();
 }
 
 void Display::Draw(QPainter* painter,int n)
@@ -44,8 +42,8 @@ void Display::Draw(QPainter* painter,int n)
         int l=(*iter)->length();
         QPointF* polyg=new QPointF[l];
         for(int i=0;i<l;i++)        
-            polyg[i]=Projection(Transform((*iter)->at(i).coordinate,transform::ScaleMatrix(1)),k,n);
-
+            polyg[i]=Projection(Transform(*((*iter)->at(i).coordinate),transform::RotationMatrix(1.5708,1.5708)),k,n);
+            //polyg[i]=Projection((*iter)->at(i).coordinate,k,n);
         painter->drawPolygon(polyg,l);
     }    
 }

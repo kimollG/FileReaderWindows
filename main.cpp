@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     paint->setBackground(QBrush(QColor(255,255,255,255)));
     //paint->drawRect(15,15,100,100);
     OBJLoader* fileManager=new OBJLoader();
-    QString path="C:\\Kirill\\FileReaderWindows-Viewport-begin";
+    QString path="C:\\Users\\Kirill\\Documents";
     QString errMessage;
     ModelData* data;
     bool b=fileManager->ReadFile(path+"\\africanHead.obj",&data,&errMessage);
