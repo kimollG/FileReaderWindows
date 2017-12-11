@@ -39,7 +39,7 @@ void Display::Draw(QPainter* painter,int n)
     double k=n/maxR/2;
     for(QVector<QVector<VertexData>*>::iterator iter=data->polygons->begin();iter<data->polygons->end();iter++)
     {
-        double dist =10;
+        double dist =5;
         double FoV=22.6;
         double rotAboutY=0,rotAboutX=0,rotAboutZ=0;
         double offsX=n/2,offsY=-n/2,offsZ=0;
@@ -48,15 +48,14 @@ void Display::Draw(QPainter* painter,int n)
         for(int i=0;i<l;i++)
         {
             QVector3D v=*((*iter)->at(i).coordinate);
+            //v.setZ(0); //for debug only, makes image flat
             QVector<QMatrix4x4> transforms{
                 transform::RotationMatrix(rotAboutY,rotAboutX,rotAboutZ),transform::PerspectiveMatrix(dist),
                 transform::ScaleMatrix(k/dist/std::tan(3.1415/180*FoV/2)),transform::OffsetMatrix(offsX,offsY,offsZ)};
-            //v.setZ(0); //for debug only, makes image flat
             for(int j=0;j<transforms.length();j++)
                 v=Transform(v,transforms[j]);
 
             polyg[i]=Projection(v);
-            //polyg[i]=Projection((*iter)->at(i).coordinate,k,n);
         }
         painter->drawPolygon(polyg,l);
     }    
