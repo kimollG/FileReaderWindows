@@ -39,7 +39,7 @@ void Display::Draw(QPainter* painter,int n)
     double k=n/maxR/2;
     for(QVector<QVector<VertexData>*>::iterator iter=data->polygons->begin();iter<data->polygons->end();iter++)
     {
-        double dist =10;
+        double dist =5;
         double FoV=22.6;
         double rotAboutY=0,rotAboutX=0,rotAboutZ=0;
         double offsX=n/2,offsY=-n/2,offsZ=0;
