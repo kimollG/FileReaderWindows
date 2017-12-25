@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     testobj_loader.cpp \
     OBJLoader.cpp \
     display.cpp \
-    transformation.cpp
+    transformation.cpp \
+    camera.cpp
 
 HEADERS  += mainwindow.h \
     modeldata.h \
@@ -39,6 +40,7 @@ HEADERS  += mainwindow.h \
     extrafunctions.h \
     OBJLoader.h \
     display.h \
-    transformation.h
+    transformation.h \
+    camera.h
 
 FORMS    += mainwindow.ui

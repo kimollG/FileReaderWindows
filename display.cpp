@@ -2,6 +2,8 @@
 #include "QImage"
 #include "math.h"
 #include "transformation.h"
+#include "camera.h"
+
 Display::Display()
 {
     data=NULL;
@@ -26,7 +28,6 @@ QVector3D Transform(QVector3D v,QMatrix4x4 matr)
 
 void Display::Draw(QPainter* painter,int n)
 {    
-    QMatrix matr;
     double maxR=0;
     for(int i=0;i<data->vertices->length();i++)
     {
@@ -36,22 +37,28 @@ void Display::Draw(QPainter* painter,int n)
         if(r>maxR)
             maxR=r;
     }
+    Camera camera(QVector3D(0,0,3),QVector3D(0,0,-1));
     double k=n/maxR/2;
+    double dist =camera.position.length();
+    double FoV=46;
+    double rotAboutY=-std::atan2(camera.position.x(),camera.position.z()),
+            rotAboutX=std::atan2(camera.position.y(),std::abs(camera.position.z())),rotAboutZ=0;
+    double offsX=n/2,offsY=-n/2,offsZ=0;
+
+    QVector<QMatrix4x4> transforms{
+        transform::RotationMatrix(rotAboutY,rotAboutX,rotAboutZ),transform::PerspectiveMatrix(dist),
+        transform::ScaleMatrix(k/dist/std::tan(3.1415/180*FoV/2)),transform::OffsetMatrix(offsX,offsY,offsZ)};
+
     for(QVector<QVector<VertexData>*>::iterator iter=data->polygons->begin();iter<data->polygons->end();iter++)
     {
-        double dist =5;
-        double FoV=22.6;
-        double rotAboutY=0,rotAboutX=0,rotAboutZ=0;
-        double offsX=n/2,offsY=-n/2,offsZ=0;
+
         int l=(*iter)->length();
         QPointF* polyg=new QPointF[l];
         for(int i=0;i<l;i++)
         {
             QVector3D v=*((*iter)->at(i).coordinate);
             //v.setZ(0); //for debug only, makes image flat
-            QVector<QMatrix4x4> transforms{
-                transform::RotationMatrix(rotAboutY,rotAboutX,rotAboutZ),transform::PerspectiveMatrix(dist),
-                transform::ScaleMatrix(k/dist/std::tan(3.1415/180*FoV/2)),transform::OffsetMatrix(offsX,offsY,offsZ)};
+
             for(int j=0;j<transforms.length();j++)
                 v=Transform(v,transforms[j]);
 
