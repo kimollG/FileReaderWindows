@@ -37,17 +37,15 @@ void Display::Draw(QPainter* painter,int n)
         if(r>maxR)
             maxR=r;
     }
-    Camera camera(QVector3D(0,0,3),QVector3D(0,0,-1));
+    Camera camera(QVector3D(3,0,3),40);
     double k=n/maxR/2;
-    double dist =camera.position.length();
-    double FoV=46;
-    double rotAboutY=-std::atan2(camera.position.x(),camera.position.z()),
-            rotAboutX=std::atan2(camera.position.y(),std::abs(camera.position.z())),rotAboutZ=0;
+
+
     double offsX=n/2,offsY=-n/2,offsZ=0;
 
     QVector<QMatrix4x4> transforms{
-        transform::RotationMatrix(rotAboutY,rotAboutX,rotAboutZ),transform::PerspectiveMatrix(dist),
-        transform::ScaleMatrix(k/dist/std::tan(3.1415/180*FoV/2)),transform::OffsetMatrix(offsX,offsY,offsZ)};
+        camera.getTransformationMatrix(),
+        transform::ScaleMatrix(k),transform::OffsetMatrix(offsX,offsY,offsZ)};
 
     for(QVector<QVector<VertexData>*>::iterator iter=data->polygons->begin();iter<data->polygons->end();iter++)
     {
