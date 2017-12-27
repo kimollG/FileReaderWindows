@@ -12,12 +12,15 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *ev)
     if(!isPressed)
         return;
     QPoint diff= ev->pos() -lastPos;
-    if(diff.manhattanLength()<4)
+    if(diff.manhattanLength()<1)
         return;
-    w->camera->rotate(transform::RotationMatrix(diff.x()/30.0,diff.y()/30.0,0));
+    double sensivity=130;
+    if(ev->buttons()==Qt::LeftButton)
+        w->camera->rotate(transform::RotationMatrix(-diff.x()/sensivity,-diff.y()/sensivity,0));
+    else if(ev->buttons()==Qt::RightButton)
+        w->camera->setFoV(w->camera->getFoV()-diff.y());
     w->drawer->Draw();
     lastPos=ev->pos();
-
 }
 void GraphicsView::mousePressEvent(QMouseEvent *event)
 {
