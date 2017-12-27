@@ -38,3 +38,7 @@ void Camera::setDistance(double dist)
 {
     this->position*=dist/position.length();
 }
+void Camera::rotate(QMatrix4x4 rotationMatrix)
+{
+    position=transform::PerformTransform(position,rotationMatrix);
+}

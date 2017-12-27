@@ -17,6 +17,7 @@ public:
     QVector3D getPosition();
     void setDistance(double );
     double getDistance();
+    void rotate(QMatrix4x4 );
 };
 
 #endif // CAMERA_H

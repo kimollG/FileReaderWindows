@@ -19,12 +19,7 @@ QPointF Projection(QVector3D q)
 
     return p;
 }
-QVector3D Transform(QVector3D v,QMatrix4x4 matr)
-{
-    QVector4D projV(v,1);
-    projV=matr*projV;
-    return projV.toVector3DAffine();
-}
+
 
 void Display::Draw(QPainter* painter,int n)
 {    
@@ -37,28 +32,25 @@ void Display::Draw(QPainter* painter,int n)
         if(r>maxR)
             maxR=r;
     }
-    Camera camera(QVector3D(3,0,3),40);
+    Camera camera(QVector3D(2.8,0,2.8),30);
     double k=n/maxR/2;
-
-
     double offsX=n/2,offsY=-n/2,offsZ=0;
-
+    camera.rotate(transform::RotationMatrix(1.7,0,0));
     QVector<QMatrix4x4> transforms{
         camera.getTransformationMatrix(),
         transform::ScaleMatrix(k),transform::OffsetMatrix(offsX,offsY,offsZ)};
 
     for(QVector<QVector<VertexData>*>::iterator iter=data->polygons->begin();iter<data->polygons->end();iter++)
     {
-
         int l=(*iter)->length();
         QPointF* polyg=new QPointF[l];
         for(int i=0;i<l;i++)
         {
             QVector3D v=*((*iter)->at(i).coordinate);
-            //v.setZ(0); //for debug only, makes image flat
+            v.setZ(0); //for debug only, makes image flat
 
             for(int j=0;j<transforms.length();j++)
-                v=Transform(v,transforms[j]);
+                v=transform::PerformTransform(v,transforms[j]);
 
             polyg[i]=Projection(v);
         }

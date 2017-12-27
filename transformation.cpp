@@ -46,3 +46,9 @@ QMatrix4x4 transform::PerspectiveMatrix(double distanse)
                       0,0,1,0,
                       0,0,-1/distanse,1);
 }
+QVector3D transform::PerformTransform(QVector3D v, QMatrix4x4 matr)
+{
+    QVector4D projV(v,1);
+    projV=matr*projV;
+    return projV.toVector3DAffine();
+}
