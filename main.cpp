@@ -3,7 +3,7 @@
 #include "OBJLoader.h"
 #include "QTest"
 #include "QtWidgets"
-
+#include "graphicsview.h"
 
 #include "testobj_loader.h"
 #include "display.h"
@@ -17,9 +17,10 @@ int main(int argc, char *argv[])
     QGraphicsScene *scene = new QGraphicsScene(w);
     QPixmap *pix = new QPixmap(n,n);
     QPainter *paint = new QPainter(pix);
-    QGraphicsView view(scene, w);
-      //view.show();
-     // view.resize(n,n);
+    GraphicsView* view=new GraphicsView(scene, w);
+      view->show();
+      view->resize(n,n);
+      view->w=w;
     paint->setPen(*(new QColor(200,200,200,255)));
 
     //paint->drawRect(15,15,100,100);

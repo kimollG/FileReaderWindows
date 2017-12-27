@@ -17,9 +17,6 @@ public:
     ~MainWindow();
     Camera* camera;
     Display* drawer;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
 private:
     Ui::MainWindow *ui;
 };

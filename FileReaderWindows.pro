@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     OBJLoader.cpp \
     display.cpp \
     transformation.cpp \
-    camera.cpp
+    camera.cpp \
+    graphicsview.cpp
 
 HEADERS  += mainwindow.h \
     modeldata.h \
@@ -41,6 +42,7 @@ HEADERS  += mainwindow.h \
     OBJLoader.h \
     display.h \
     transformation.h \
-    camera.h
+    camera.h \
+    graphicsview.h
 
 FORMS    += mainwindow.ui
