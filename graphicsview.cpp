@@ -25,8 +25,6 @@ void GraphicsView::mouseMoveEvent(QMouseEvent *ev)
 void GraphicsView::mousePressEvent(QMouseEvent *event)
 {
     qDebug() << "press";
-    w->camera->rotate(transform::RotationMatrix(0.31415,0,0));
-    w->drawer->Draw();
     lastPos=event->pos();
     isPressed=true;
 }
