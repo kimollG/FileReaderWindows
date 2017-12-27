@@ -3,24 +3,25 @@
 #include "OBJLoader.h"
 #include "QTest"
 #include "QtWidgets"
-#include "QWidget"
+
+
 #include "testobj_loader.h"
 #include "display.h"
 int main(int argc, char *argv[])
 {
     const int n=900;
     QApplication a(argc, argv);
-    QMainWindow *w=new QMainWindow();
+    MainWindow *w=new MainWindow();
     w->resize(n,n);
     w->show();
     QGraphicsScene *scene = new QGraphicsScene(w);
     QPixmap *pix = new QPixmap(n,n);
     QPainter *paint = new QPainter(pix);
     QGraphicsView view(scene, w);
-      view.show();
-      view.resize(n,n);
+      //view.show();
+     // view.resize(n,n);
     paint->setPen(*(new QColor(200,200,200,255)));
-    paint->setBackground(QBrush(QColor(255,255,255,255)));
+
     //paint->drawRect(15,15,100,100);
     OBJLoader* fileManager=new OBJLoader();
     QString path="C:\\Users\\Kirill_Morozov\\Documents";
@@ -35,8 +36,10 @@ int main(int argc, char *argv[])
     else
         qDebug()<<errMessage;
 
-    Display disp(*data);
-    disp.Draw(paint,n);
+    //Display disp(*data);
+    w->drawer=new Display(*data,paint,n,w->camera,scene,pix);
+    w->drawer->Draw();
+    //disp.Draw(paint,n,w->camera);
     scene->addPixmap(*pix);
     //w.show();
     TestOBJ_Loader* testLoader = new TestOBJ_Loader;
